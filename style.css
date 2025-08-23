@@ -93,11 +93,19 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Navigation */
+/* Navigation */
 .navbar {
-    background-color: rgba(30, 41, 59, 0.95);
+    /* Changed background-color to transparent */
+    background-color: transparent; 
     backdrop-filter: blur(10px);
     padding: 15px 0;
-    transition: var(--transition);
+    transition: background-color 0.4s ease; /* Adjusted transition to focus on background */
+}
+
+.navbar-scrolled {
+    /* This new class adds the background when you scroll */
+    background-color: rgba(30, 41, 59, 0.95);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
 }
 
 .navbar-brand {
@@ -151,7 +159,7 @@ h1, h2, h3, h4, h5, h6 {
 .hero-section h2 {
     font-weight: 400;
     margin-bottom: 1.5rem;
-}
+}khazini
 
 .hero-section p {
     font-size: 1.1rem;
@@ -159,27 +167,24 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: 2rem;
 }
 
-.hero-image-container {
-    width: 300px;
-    height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 255, 255, 0.2);
+/* Hero Section - New Styles */
+.hero-section {
+    position: relative; /* This is crucial for positioning the image */
+    overflow: hidden;   /* Prevents the image from spilling out */
 }
 
-.placeholder-image {
-    width: 250px;
-    height: 250px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 50%;
-    color: white;
+/* --- REPLACE the old .hero-image-container rule with this one --- */
+.hero-image-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+}
+
+/* --- REPLACE the old .hero-image rule with this one --- */
+.hero-image {
+    height: 100%; /* This is the key change: forces the image to fill the container's height */
+    width: auto;
 }
 
 /* Feature Box */
@@ -286,6 +291,61 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: 10px;
     font-weight: 500;
     color: var(--accent-color);
+}
+
+/* --- CSS FOR COLLAPSIBLE EXPERIENCE SECTION --- */
+
+/* Style for the items that will be hidden */
+.collapsible-experience {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    margin-bottom: 0; /* Remove margin when hidden */
+    transition: all 0.6s ease-in-out;
+}
+
+/* Style for the items when they are shown */
+.collapsible-experience.show {
+    max-height: 1000px; /* A large value to allow content to expand */
+    opacity: 1;
+    margin-bottom: 40px; /* Restore original margin */
+}
+
+/* Style for the new toggle button */
+.experience-toggle-btn {
+    position: absolute;
+    bottom: 0; /* Position it at the very bottom of the timeline */
+    left: 0; /* Align its left edge with the line's position */
+    transform: translateX(-50%); /* Shift it left by half its own width to center it on the line */
+    
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    border: 3px solid white;
+    box-shadow: 0 0 0 2px var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 5;
+}
+
+.experience-toggle-btn:hover {
+    transform: translateX(-50%) scale(1.1);
+    background: var(--accent-color);
+    color: var(--dark-color);
+}
+
+.experience-toggle-btn i {
+    transition: transform 0.4s ease;
+}
+
+/* Rotate the icon when the section is open */
+.experience-toggle-btn.open i {
+    transform: rotate(135deg);
 }
 
 /* Portfolio */
@@ -430,11 +490,6 @@ h1, h2, h3, h4, h5, h6 {
         margin-top: 40px;
     }
     
-    .placeholder-image {
-        width: 200px;
-        height: 200px;
-    }
-    
     .timeline {
         padding-left: 20px;
     }
@@ -466,13 +521,39 @@ h1, h2, h3, h4, h5, h6 {
         height: 200px;
     }
     
-    .placeholder-image {
-        width: 160px;
-        height: 160px;
-    }
-    
     .btn {
         width: 100%;
         margin-bottom: 10px;
+    }
+}
+
+/* Responsive Design for Hero Image */
+@media (max-width: 991px) {
+    .hero-section {
+        /* Ensure text is centered on mobile */
+        text-align: center;
+    }
+
+    .hero-image-container {
+        /* On mobile, make the image a faded background element at the bottom */
+        width: 100%;
+        height: 60%;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0.15; /* Fade out the image so text is readable */
+        z-index: 0; /* Place it behind the text content */
+    }
+
+    .hero-image {
+        /* Make the image contain within its new bottom container */
+        max-width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .hero-section .col-lg-6:first-child {
+        /* Ensure the text content has a higher z-index to appear on top */
+        position: relative;
+        z-index: 1;
     }
 }
